@@ -12,10 +12,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # read_only_fields = ['id', 'user']
         # depth = 1
 class RegisterUserSerializer(serializers.ModelSerializer):
-    profile = UserProfileSerializer(read_only=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'profile']
+        fields = '__all__'
+    # profile = UserProfileSerializer(read_only=True)
+    # class Meta:
+    #     model = User
+    #     fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'profile']
 
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(read_only=True)
