@@ -8,7 +8,8 @@ from rest_framework import serializers
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'role', 'bio', 'profile_picture']
+        fields = '__all__'
+
         # read_only_fields = ['id', 'user']
         # depth = 1
 class RegisterUserSerializer(serializers.ModelSerializer):
