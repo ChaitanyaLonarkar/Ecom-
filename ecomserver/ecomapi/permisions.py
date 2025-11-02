@@ -9,8 +9,8 @@ class IsAdminUser(BasePermission):
 
     def has_permission(self, request, view):
         userprofile = UserProfile.objects.get(user=request.user)
-        # print(userprofile.role,"===================")
-        return request.user and request.user.is_authenticated and userprofile.role in ['admin', 'ADMIN']
+        print(userprofile.role,"===================")
+        return userprofile.role in ['admin', 'ADMIN']
     
 class IsSuperAdminUser(BasePermission):
     """
@@ -19,7 +19,18 @@ class IsSuperAdminUser(BasePermission):
 
     def has_permission(self, request, view):
         userprofile = UserProfile.objects.get(user=request.user)
-        # print(userprofile.role,"===================")
+        print(userprofile.role,"===================")
 
-        return request.user and request.user.is_authenticated and userprofile.role in ['SUPER_ADMIN', 'super_admin']
+        return userprofile.role in ['SUPER_ADMIN', 'super_admin']
+
+class IsAdminOrSuperAdminUser(BasePermission):
+    """
+    Custom permission to only allow admin or super admin users to access certain views.
+    """
+
+    def has_permission(self, request, view):
+        userprofile = UserProfile.objects.get(user=request.user)
+        print(userprofile.role,"===================")
+
+        return userprofile.role in ['SUPER_ADMIN', 'super_admin', 'admin', 'ADMIN']
     
