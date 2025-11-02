@@ -3,6 +3,8 @@
 from django.urls import path
 
 from .auth_views import *
+from .category_views import *
+
 
 urlpatterns = [
     path('auth/register', RegisterUserView.as_view(), name='register'),
@@ -11,6 +13,12 @@ urlpatterns = [
     path('auth/profile', UserProfileView.as_view(), name='profile'),
     path('auth/create-admin', CreateAdminView.as_view(), name='create-admin'),
 
+     # category urls
+    path('categories/', CategoryListView.as_view(), name='category-list'),
+    path('categories/<int:pk>/', CategoryDetailUpdateView.as_view(), name='category-detail-update'),
+    # path('categories/create/', CategoryCreateView.as_view(), name='category-create'),
+    # path('categories/<int:pk>/update/', CategoryUpdateView.as_view(), name='category-update'),
+    # path('categories/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category-delete'),
 
    
 ]

@@ -178,7 +178,8 @@ class UserProfileView(APIView):
     
 
 class CreateAdminView(APIView):
-    permission_classes = [IsAuthenticated & IsSuperAdminUser]
+
+    permission_classes = [IsAuthenticated , IsSuperAdminUser]
 
     def post(self, request):
         username = request.data.get('username')

@@ -1,7 +1,7 @@
 
 from .models import UserProfile, User
 from rest_framework import serializers
-
+from .models import Category
 
 
 
@@ -28,3 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['id', 'username', 'email', 'profile']
 
+# category serializer
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'

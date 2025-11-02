@@ -1,5 +1,6 @@
 
 from rest_framework.permissions import BasePermission
+from .models import UserProfile
 
 class IsAdminUser(BasePermission):
     """
@@ -7,7 +8,9 @@ class IsAdminUser(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin'| 'ADMIN'
+        userprofile = UserProfile.objects.get(user=request.user)
+        # print(userprofile.role,"===================")
+        return request.user and request.user.is_authenticated and userprofile.role in ['admin', 'ADMIN']
     
 class IsSuperAdminUser(BasePermission):
     """
@@ -15,5 +18,8 @@ class IsSuperAdminUser(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'super_admin'| 'SUPER_ADMIN'
+        userprofile = UserProfile.objects.get(user=request.user)
+        # print(userprofile.role,"===================")
+
+        return request.user and request.user.is_authenticated and userprofile.role in ['SUPER_ADMIN', 'super_admin']
     
