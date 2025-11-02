@@ -4,6 +4,7 @@ from django.urls import path
 
 from .auth_views import *
 from .category_views import *
+from .product_views import *
 
 
 urlpatterns = [
@@ -22,6 +23,13 @@ urlpatterns = [
 
     #Brand urls
     path('brands/', BrandListView.as_view(), name='brand-list'),
+
+    #product urls
+    path('products/', ProductListView.as_view(), name='product-list'),
+    path('products/<int:pk>/', ProductGetUpdateDeleteView.as_view(), name='product-detail-update'),
+    # path('products/create/', ProductCreateView.as_view(), name='product-create'),
+    # path('products/<int:pk>/update/', ProductUpdateView.as_view(), name='product-update'),
+    # path('products/<int:pk>/delete/', ProductDeleteView.as_view(), name='product-delete'),
 
    
 ]
