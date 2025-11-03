@@ -58,4 +58,4 @@ class ProductImageCreateSerializer(serializers.ModelSerializer):
 class CartAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
-        fields = ['product_variant', 'quantity']
+        fields = [ 'cart', 'product_variant', 'quantity','subtotal']

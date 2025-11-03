@@ -180,6 +180,12 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
 
+
+    def save(self, *args, **kwargs):
+        if not self.subtotal:
+            self.subtotal = self.product_variant.price * self.quantity
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return f"{self.product_variant.name} x {self.quantity}"
 
