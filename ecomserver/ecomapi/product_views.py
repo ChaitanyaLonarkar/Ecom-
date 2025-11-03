@@ -10,7 +10,7 @@ from .permisions import IsAdminUser, IsSuperAdminUser, IsAdminOrSuperAdminUser
 from .models import Product, UserProfile
 
 from .models import Category, Brand
-from .serializers import CategorySerializer, BrandSerializer, ProductSerializer
+from .serializers import CategorySerializer, BrandSerializer, ProductSerializer, ProductVarientSerializer
 
 
 class ProductListView(APIView):
@@ -74,3 +74,7 @@ class ProductGetUpdateDeleteView(APIView):
             return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+    
