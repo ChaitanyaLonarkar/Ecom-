@@ -76,5 +76,19 @@ class ProductGetUpdateDeleteView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-
+class ProductVarientCreateView(APIView):
+    """View to create a new product variant."""
+    permission_classes = [IsAuthenticated, IsAdminOrSuperAdminUser]
+    def post(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        if product is None:
+            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+        print(product,'sdfasdfasdf')
+        serializer = ProductVarientSerializer(product,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print("Product variant created successfully", serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
