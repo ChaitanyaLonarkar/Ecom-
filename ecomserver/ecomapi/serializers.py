@@ -1,7 +1,7 @@
 
-from .models import Product, ProductVariant, UserProfile, User
+from .models import CartItem, Product, ProductVariant, UserProfile, User
 from rest_framework import serializers
-from .models import Category, Brand
+from .models import Category, Brand,ProductImage
 
 
 
@@ -49,3 +49,13 @@ class ProductVarientSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductVariant
         fields = ['id', 'sku', 'name', 'price', 'stock']
+
+class ProductImageCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        field=['id', 'image_url']
+
+class CartAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ['product_variant', 'quantity']

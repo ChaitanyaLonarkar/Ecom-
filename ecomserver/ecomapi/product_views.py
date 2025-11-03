@@ -10,7 +10,7 @@ from .permisions import IsAdminUser, IsSuperAdminUser, IsAdminOrSuperAdminUser
 from .models import Product, UserProfile
 
 from .models import Category, Brand
-from .serializers import CategorySerializer, BrandSerializer, ProductSerializer, ProductVarientSerializer
+from .serializers import ProductImageCreateSerializer, CategorySerializer, BrandSerializer, ProductSerializer, ProductVarientSerializer
 
 
 class ProductListView(APIView):
@@ -92,3 +92,15 @@ class ProductVarientCreateView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+# class ProductImageCreateView(APIView):
+#     """View to create a new product image."""
+#     permission_classes = [IsAuthenticated, IsAdminOrSuperAdminUser]
+#     def post(self, request, pk):
+#         product = Product.objects.get(pk=pk)
+#         # image = request.data.get('image')
+#         serializer = ProductImageCreateSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

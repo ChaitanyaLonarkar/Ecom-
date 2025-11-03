@@ -5,6 +5,8 @@ from django.urls import path
 from .auth_views import *
 from .category_views import *
 from .product_views import *
+from .cart_views import *
+
 
 
 urlpatterns = [
@@ -28,6 +30,12 @@ urlpatterns = [
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/<int:pk>/', ProductGetUpdateDeleteView.as_view(), name='product-detail-update'),
     path('products/<int:pk>/variants/', ProductVarientCreateView.as_view(), name='product-create-varient'),
+    # path('product/<id:pk>/images/', ProductImageCreateView.as_view(), name='product-image-create'),
    
+
+   # cart apis
+   path('cart/add/', CartAddItemView.as_view(), name='cart-add-item'),
+
+
    
 ]
