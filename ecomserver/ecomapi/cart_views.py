@@ -16,7 +16,16 @@ class CartAddItemView(APIView):
     permission_classes=[IsAuthenticated,IsSuperAdminUser]
 
     def post(self,request):
-        serializer=CartAddSerializer(data=request.data)
+        cart = request.user.cart
+        print (cart,"dfasdf")
+        # serializer=CartAddSerializer(cart, data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data,status=status.HTTP_201_CREATED)
+        product_variant=request.data.get('product_variant')
+        quantity=request.data.get('quantity')
+
+        serializer=CartAddSerializer(data={'cart':cart.id,'product_variant':product_variant,'quantity':quantity})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
