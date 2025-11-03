@@ -19,7 +19,7 @@ class IsSuperAdminUser(BasePermission):
 
     def has_permission(self, request, view):
         userprofile = UserProfile.objects.get(user=request.user)
-        print(userprofile.role,"===================")
+        # print(userprofile.role,"===================")
 
         return userprofile.role in ['SUPER_ADMIN', 'super_admin']
 
@@ -30,7 +30,7 @@ class IsAdminOrSuperAdminUser(BasePermission):
 
     def has_permission(self, request, view):
         userprofile = UserProfile.objects.get(user=request.user)
-        print(userprofile.role,"===================")
+        # print(userprofile.role,"===================")
 
         return userprofile.role in ['SUPER_ADMIN', 'super_admin', 'admin', 'ADMIN']
     
