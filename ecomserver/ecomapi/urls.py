@@ -2,6 +2,8 @@
 
 from django.urls import path
 
+from .stripe_views import PaymentAPI
+
 from .auth_views import *
 from .category_views import *
 from .product_views import *
@@ -34,8 +36,9 @@ urlpatterns = [
    
 
    # cart apis
-   path('cart/add/', CartAddItemView.as_view(), name='cart-add-item'),
+    path('cart/add/', CartAddItemView.as_view(), name='cart-add-item'),
 
+    path('make_payment/', PaymentAPI.as_view(), name='make_payment')
 
    
 ]
