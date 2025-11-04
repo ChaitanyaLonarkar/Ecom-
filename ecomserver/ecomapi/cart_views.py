@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 from .permisions import IsAdminUser, IsSuperAdminUser, IsAdminOrSuperAdminUser
 from .models import Cart, CartItem, Product, UserProfile
-from .serializers import CartAddSerializer, CartSerializer
+from .serializers import CartAddSerializer, CartItemSerializer, CartSerializer
 
 
 class CartAddItemView(APIView):
@@ -39,20 +39,29 @@ class CartView(APIView):
         user= request.user
         carts= Cart.objects.get(user=user)
 
-        print(user,"dfasdf")
-        print("cartid", carts.id)
-        cart = CartItem.objects.filter(cart=carts)
+        # print(user,"dfasdf")
+        # print("cartid", carts.id)
+        cart = CartItem.objects.all().filter(cart=carts.id)
         
-        # serializer=CartSerializer(cart, many=True)
-        print(cart.product_variant,"dfasdf")
+        serializer=CartSerializer(carts)
+
+        print(serializer.data,"dfasdf")
+
+        total=0
+        for item in cart:
+            total += item.subtotal
+        # print("total", total)
         return Response({
                 "user": request.user.username,
-                "items":[{
-                # "id": cart.id,
-                # "product_variant": cart.product_variant,
-                # "quantity": cart.quantity,
-                }],
+                # "items":[{
+                # # "id": cart.id,
+                # # "product_variant": cart.product_variant,
+                # # "quantity": cart.quantity,
+                # }],
                 # "total":cart.subtotal
+                "items":cart.values(),
+                # "cart":serializer.data,
+                "total":total
 
             },status=status.HTTP_200_OK)
         # return Response(serializer.data,status=status.HTTP_200_OK)
