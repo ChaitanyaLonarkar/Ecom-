@@ -2,6 +2,8 @@
 
 from django.urls import path
 
+from ecomapi.send_email_views import PasswordResetConfirmView, PasswordResetRequestView
+
 from .stripe_views import PaymentAPI, StripeWebhookAPIView
 
 from .auth_views import *
@@ -42,6 +44,10 @@ urlpatterns = [
     path('make_payment/', PaymentAPI.as_view(), name='make_payment'),
     # path('suce')
     path('webhook/' , StripeWebhookAPIView.as_view(), name='stripe-webhook'),
+
+
+    path('password-reset/', PasswordResetRequestView.as_view(), name='password-reset'),
+    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 
    
 ]

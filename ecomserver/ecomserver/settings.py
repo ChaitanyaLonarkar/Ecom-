@@ -35,6 +35,10 @@ STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+# print(STRIPE_API_KEY, "stripe api key in settings")
+# print(STRIPE_SECRET_KEY, "stripe secret key in settings")
+# print(SECRET_KEY, "secret key in settings")
+
 ALLOWED_HOSTS = []
 
 
@@ -221,3 +225,13 @@ SIMPLE_JWT = {
 # }
 
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# print(EMAIL_HOST_USER, "email host user")
+# print(EMAIL_HOST_PASSWORD, "email host password")
