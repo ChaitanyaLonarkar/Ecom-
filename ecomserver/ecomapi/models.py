@@ -259,3 +259,15 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.user.username}"
+
+
+class PaymentDetails(models.Model):
+    
+    amount_total=models.CharField(max_length=50, null=True, blank=True)
+    customer_email=models.CharField(max_length=100, null=True, blank=True)
+    customer_name=models.CharField(max_length=100, null=True, blank=True)
+    payment_id=models.CharField(max_length=100, null=True, blank=True)
+    payment_status=models.CharField(max_length=100, null=True, blank=True)
+    status=models.CharField(max_length=100, null=True, blank=True)
+    def __str__(self):
+        return f"Payment Details for Order #{self.order.id}"

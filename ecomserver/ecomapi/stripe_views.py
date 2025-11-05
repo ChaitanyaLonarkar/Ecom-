@@ -1,58 +1,124 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+# from ecomserver.settings import STRIPE_API_KEY, STRIPE_SECRET_KEY
+from django.conf import settings
+
+from .serializers import CartSerializer
 from .stripe_serializer import CardInformationSerializer
 import stripe
-from .models import Product, Cart
+from .models import CartItem, PaymentDetails, Product, Cart
 
 
 class PaymentAPI(APIView):
 
-    stripe.api_key = 'your-key-goes-here'
+   
+    # stripe.api_key = settings.STRIPE_API_KEY
+
     domain_url = 'http://localhost:8000/'
 
     def post(self, request):
         try:
             # get product details here
-            cart_id = request.data.get('cart_id')
-            cart_items=Cart.objects.get(id=cart_id)
-            print('cart_items',cart_items)
+            user= request.user
+            print(settings.STRIPE_API_KEY,"dfasdfsdfsadfasdfasdfasdfasdfasdf")
+            carts= Cart.objects.get(user=user)
 
+            # print(user,"dfasdf")
+            # print("cartid", carts.id)
+            cart = CartItem.objects.all().filter(cart=carts.id)
+            
+            serializer=CartSerializer(carts)
 
+            print(serializer.data,"dfasdf")
+
+            total=0
+            for item in cart:
+                total += item.subtotal
+
+            convert_total= total * 100  # converting to cents
+            total= int(convert_total)
             # create checkout session 
             checkout_session= stripe.checkout.Session.create(
                 payment_method_types=['card'],
-                # line_items=[
-                #     {
-                #         # 'price_data': {
-                #         #     'currency': 'inr',
-                #         #     'product_data': {
-                #         #         'name': cart_items.product,
-                #         #     },
-                #         #     'unit_amount': cart_items.subtotal,  # Amount in cents
-                #         # },
-                #         # 'quantity': cart_items.quantity,
-                        
-                #     },
-                # ],
-
                 line_items=[
                     {
-                        'price': 12 ,
-                        'quantity': 1,
+                        'price_data': {
+                            'currency': 'inr',
+                            'product_data': {
+                                'name': 'E-commerce Purchase',
+                            },
+                            
+                            'unit_amount': total ,  # Amount in cents
+                        },
+                        'quantity': cart.count(),
+                        
                     },
                 ],
 
-
+                # line_items=[
+                #     {
+                #         'price': 12 ,
+                #         'quantity': 1,
+                #     },
+                # ],
                 mode='payment',
                 success_url=self.domain_url + 'success/',
                 cancel_url=self.domain_url + 'cancel/',
             )
             return Response({'url': checkout_session['url']}, status=status.HTTP_200_OK)
-        except stripe.error.StripeError as e:
-            return Response({'error': e.error['message'], 'status': status.HTTP_400_BAD_REQUEST})
+        except Exception as e:
+            return Response({'error': e.error, 'status': status.HTTP_400_BAD_REQUEST})
         
      
+class StripeWebhookAPIView(APIView):
+    def post(self, request):
+        payload = request.body
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+        # endpoint_secret = STRIPE_SECRET_KEY
+       
+        
+        try:
+            event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+        except ValueError:
+            return Response(status=400)
+        
+        except stripe.error.SignatureVerificationError :
+            return Response(status=400)
+
+    
+        if event['type'] == 'checkout.session.completed' :
+            print(event)
+            print('Payment was successful.')
+            print(event['data']['object']['customer'])
+            amount_total = event['data']['object']['amount_total']
+            customer_email = event['data']['object']['customer_details']['email']
+            customer_name = event['data']['object']['customer_details']['name']
+            payment_id = event['id']
+            payment_status = event['data']['object']['payment_status']
+            status= event['data']['object']['status']
+
+            payment_details = PaymentDetails(
+                payment_id=payment_id,
+                customer_email=customer_email,
+                customer_name=customer_name,
+                amount_total=amount_total,
+                payment_status=payment_status,
+                status=status
+            )
+            payment_details.save()
+
+            print(payment_details)
+
+
+        elif event['type'] == 'checkout.session.async_payment_failed':
+            print('Payment failed.')
+        
+      
+        return Response(status=200)
+
+
 
     # serializer_class = CardInformationSerializer
 

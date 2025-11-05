@@ -19,4 +19,5 @@ admin.site.register(Notification)
 admin.site.register(Discount)
 admin.site.register(Coupon)
 admin.site.register(CartItem)
+admin.site.register(PaymentDetails)
 

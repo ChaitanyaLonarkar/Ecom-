@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from .stripe_views import PaymentAPI
+from .stripe_views import PaymentAPI, StripeWebhookAPIView
 
 from .auth_views import *
 from .category_views import *
@@ -39,8 +39,9 @@ urlpatterns = [
     path('cart/add/', CartAddItemView.as_view(), name='cart-add-item'),
     path('cart/', CartView.as_view(), name='cart-view'),
 
-    path('make_payment/', PaymentAPI.as_view(), name='make_payment')
+    path('make_payment/', PaymentAPI.as_view(), name='make_payment'),
     # path('suce')
+    path('webhook/' , StripeWebhookAPIView.as_view(), name='stripe-webhook'),
 
    
 ]
