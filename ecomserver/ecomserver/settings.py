@@ -39,6 +39,7 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 # print(STRIPE_SECRET_KEY, "stripe secret key in settings")
 # print(SECRET_KEY, "secret key in settings")
 
+SECRET_KEY = 'django-insecure-md*o@h%e2oea_r55r*_b$#lravzv6-z(+kcirughracvc%qa48'
 
 
 
@@ -233,7 +234,8 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
+EMAIL_HOST_USER = 'chaitanyal.cse21d@sbjit.edu.in'
+EMAIL_HOST_PASSWORD = "mhug cwtz kity yrxj"
 # EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 # EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
