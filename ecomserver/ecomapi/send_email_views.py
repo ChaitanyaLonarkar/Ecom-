@@ -32,22 +32,26 @@ class PasswordResetRequestView(APIView):
         token = default_token_generator.make_token(user)
 
         # Construct the reset link (replace with your frontend URL)
-        reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}/"
+        reset_link = f"http://127.0.0.1:8000/reset-password/{uid}/{token}/"
+        # reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}/"
+
 
         # Render email content from a template
-        email_html_message = render_to_string('password_reset_email.html', {
-            'user': user,
-            'reset_link': reset_link,
-        })
+        # email_html_message = render_to_string('password_reset_email.html', {
+        #     'user': user,
+        #     'reset_link': reset_link,
+        # })
 
         send_mail(
             'Password Reset Request',
-            email_html_message,  # Use html_message for HTML content
+            # email_html_message,  # Use html_message for HTML content
+            f"Your OTP for password reset is link is here {reset_link}",
             settings.DEFAULT_FROM_EMAIL,
             [user.email],
             fail_silently=False,
-            html_message=email_html_message,
+            # html_message=email_html_message,
         )
+        
 
         return Response({'detail': 'Password reset email sent if account exists.'}, status=status.HTTP_200_OK)
 
