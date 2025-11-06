@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'ecomapi',
     'rest_framework',
     'rest_framework_simplejwt',
+    'cronjob_demo',
+    'django_crontab'
 
 ]
 
@@ -242,3 +244,8 @@ EMAIL_HOST_PASSWORD = "mhug cwtz kity yrxj"
 
 # print(EMAIL_HOST_USER, "email host user")
 # print(EMAIL_HOST_PASSWORD, "email host password")
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'cronjob_demo.cron.cron_job','>> /tmp/scheduled_job.log')
+]
