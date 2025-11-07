@@ -1,5 +1,5 @@
 
-from .models import Cart, CartItem, Product, ProductVariant, UserProfile, User
+from .models import Cart, CartItem, Order, Product, ProductVariant, UserProfile, User
 from rest_framework import serializers
 from .models import Category, Brand,ProductImage
 
@@ -82,3 +82,14 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     uid = serializers.CharField(required=True)
     token = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True, write_only=True)
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = [ 'user', 'address', 'total_amount', 'discount', 'grand_total', 'payment_status', 'order_status', 'created_at', ]
+
+# class OrderAddSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Order
+#         fields = [ 'address', '']
