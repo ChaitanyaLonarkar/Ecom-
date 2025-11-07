@@ -40,6 +40,11 @@ urlpatterns = [
    # cart apis
     path('cart/add/', CartAddItemView.as_view(), name='cart-add-item'),
     path('cart/', CartView.as_view(), name='cart-view'),
+  
+    path('cart/<int:pk>/update/', CartUpdateDeleteView.as_view(), name='cart-update'),
+    path('cart/<int:pk>/delete/', CartUpdateDeleteView.as_view(), name='cart-delete'),
+
+    
 
     path('make_payment/', PaymentAPI.as_view(), name='make_payment'),
     # path('suce')

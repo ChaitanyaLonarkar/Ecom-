@@ -61,9 +61,11 @@ class CartAddSerializer(serializers.ModelSerializer):
         fields = [ 'cart', 'product_variant', 'quantity','subtotal']
 
 class CartItemSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = CartItem
         fields = "__all__"
+
 class CartSerializer(serializers.ModelSerializer):
     cartitem=CartItemSerializer(read_only=True,many=True)
     

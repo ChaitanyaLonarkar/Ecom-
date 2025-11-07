@@ -13,7 +13,7 @@ from .serializers import CartAddSerializer, CartItemSerializer, CartSerializer
 
 class CartAddItemView(APIView):
 
-    permission_classes=[IsAuthenticated,IsSuperAdminUser]
+    permission_classes=[IsAuthenticated,AllowAny]
 
   
     def post(self,request):
@@ -34,7 +34,7 @@ class CartAddItemView(APIView):
 
 
 class CartView(APIView):
-    permission_classes=[IsAuthenticated,IsSuperAdminUser]
+    permission_classes=[IsAuthenticated,AllowAny]
     def get(self,request):
         user= request.user
         carts= Cart.objects.get(user=user)
@@ -67,3 +67,34 @@ class CartView(APIView):
         # return Response(serializer.data,status=status.HTTP_200_OK)
         # except :
         #     return Response({"error":"Cart not found"},status=status.HTTP_404_NOT_FOUND)
+
+
+class CartUpdateDeleteView(APIView):
+    permission_classes=[IsAuthenticated,AllowAny]
+
+    def put(self, request, pk):
+        user= request.user
+        cart= Cart.objects.get(user=user)
+        cartItem = CartItem.objects.get(cart=cart.id,id=pk)
+        # cartItemToUpdate= cartItems.get(id=pk)
+        print(cartItem,"value")
+        if cartItem is None:
+            return Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = CartItemSerializer(cartItem, data=request.data, partial=True)
+
+        # if cart is None:
+        #     return Response({'error': 'Cart not found'}, status=status.HTTP_404_NOT_FOUND)
+   
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        user= request.user
+        cart= Cart.objects.get(user=user)
+        cartItem = CartItem.objects.get(cart=cart.id,id=pk)
+        if cartItem is None:
+            return Response({'error': 'Cart item not found'}, status=status.HTTP_404_NOT_FOUND)
+        cartItem.delete()
+        return Response({'message':"CartItem Deleted"},status=status.HTTP_204_NO_CONTENT)
